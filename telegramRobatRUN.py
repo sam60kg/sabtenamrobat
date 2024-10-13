@@ -69,7 +69,7 @@ def get_message():
 @app.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url="https://sabtenamrobat-rik4vd4p7-00989901243254s-projects.vercel.app/" + API_TOKEN)
+    bot.set_webhook(url="https://sabtenamrobat-f6uv65yav-00989901243254s-projects.vercel.app/" + API_TOKEN)
     return "Webhook set!", 200
 
 if __name__ == "__main__":
