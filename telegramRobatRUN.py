@@ -2,7 +2,7 @@ import telebot
 from flask import Flask, request
 
 # توکن ربات
-API_TOKEN = 'YOUR_API_TOKEN'
+API_TOKEN = '7174774942:AAGaPSfnHdN21Vv85yxSRX13Th5jd29-wMA'
 bot = telebot.TeleBot(API_TOKEN)
 
 # متغیرها
