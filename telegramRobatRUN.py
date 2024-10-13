@@ -1,8 +1,8 @@
 import telebot
-from telebot import types
+from flask import Flask, request
 
 # توکن ربات
-API_TOKEN = '7174774942:AAGaPSfnHdN21Vv85yxSRX13Th5jd29-wMA'  # توکن جدید خود را اینجا قرار دهید
+API_TOKEN = 'YOUR_API_TOKEN'
 bot = telebot.TeleBot(API_TOKEN)
 
 # متغیرها
@@ -54,11 +54,23 @@ def welcome_message(user_id, user_type):
     
     bot.send_message(user_id, message)
 
-# سایر کدهای مربوط به ثبت نام و مدیریت ظرفیت
-# ...
+# اپلیکیشن Flask برای Webhook
+app = Flask(__name__)
 
-# راه‌اندازی ربات
-bot.polling()
+# دریافت آپدیت‌ها از Telegram
+@app.route('/' + API_TOKEN, methods=['POST'])
+def get_message():
+    json_str = request.get_data().decode('UTF-8')
+    update = telebot.types.Update.de_json(json_str)
+    bot.process_new_updates([update])
+    return "!", 200
 
-# چاپ پیام در انتهای اسکریپت
-print("ربات با موفقیت راه‌اندازی شد و در حال شنیدن پیام‌ها است...")
+# تنظیم Webhook
+@app.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url="https://your-vercel-app-url.vercel.app/" + API_TOKEN)
+    return "Webhook set!", 200
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
