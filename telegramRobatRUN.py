@@ -1,3 +1,4 @@
+import os
 import telebot
 from flask import Flask, request
 
@@ -65,11 +66,15 @@ def get_message():
     bot.process_new_updates([update])
     return "!", 200
 
-# تنظیم Webhook
+# تنظیم وبهوک به طور خودکار
+def set_webhook():
+    webhook_url = "https://sabtenamrobat-rik4vd4p7-00989901243254s-projects.vercel.app/" + API_TOKEN
+    bot.remove_webhook()  # حذف وبهوک قبلی
+    bot.set_webhook(url=webhook_url)  # تنظیم وبهوک جدید
+
 @app.route("/")
 def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url="https://sabtenamrobat-f6uv65yav-00989901243254s-projects.vercel.app/" + API_TOKEN)
+    set_webhook()  # تنظیم وبهوک هر بار که برنامه اجرا می‌شود
     return "Webhook set!", 200
 
 if __name__ == "__main__":
